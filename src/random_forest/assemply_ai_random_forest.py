@@ -4,6 +4,7 @@ import numpy as np
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
 
+import utils.utilities as utils
 from decision_trees.assembly_ai_decision_trees import DecisionTree
 
 
@@ -38,9 +39,6 @@ class RandomForest:
         counter = Counter(y)
         return counter.most_common(1)[0][0]
 
-def accuracy(y_test, y_pred):
-    return np.sum(y_test == y_pred) / len(y_test)
-
 def train():
     ds = datasets.load_breast_cancer()
     X, y = ds.data, ds.target
@@ -48,7 +46,7 @@ def train():
     clf = RandomForest(n_trees=20)
     clf.fit(X_train, y_train)
     predictions = clf.predict(X_test)
-    acc = accuracy(y_test, predictions)
+    acc = utils.accuracy(y_test, predictions)
     print(acc)
 
 

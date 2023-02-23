@@ -1,4 +1,3 @@
-
 from collections import Counter
 
 import matplotlib.pyplot as plt
@@ -6,6 +5,8 @@ import numpy as np
 from matplotlib.colors import ListedColormap
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
+
+import utils.utilities as utils
 
 
 def euclidian_distance(x1, x2):
@@ -50,9 +51,7 @@ def train():
     predictions = classifier.predict(X_test)
 
     print(predictions)
-
-    accuracy = np.sum(predictions == y_test) / len(y_test)
-    print(accuracy)
+    print(utils.accuracy(y_test, predictions))
 
 if __name__ == '__main__':
     train()

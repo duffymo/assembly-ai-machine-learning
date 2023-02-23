@@ -4,6 +4,8 @@ import numpy as np
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
 
+import utils.utilities as utils
+
 
 class Node:
     def __init__(self, feature=None, threshold=None, left=None, right=None, *, value=None):
@@ -97,8 +99,6 @@ class DecisionTree:
         if x[node.feature] <= node.threshold:
             return self._traverse_tree(x, node.left)
         return self._traverse_tree(x, node.right)
-def accuracy(y_test, y_pred):
-    return np.sum(y_test == y_pred) / len(y_test)
 
 def train():
     ds = datasets.load_breast_cancer()
@@ -107,7 +107,7 @@ def train():
     clf = DecisionTree(max_depth=50)
     clf.fit(X_train, y_train)
     predictions = clf.predict(X_test)
-    acc = accuracy(y_test, predictions)
+    acc = utils.accuracy(y_test, predictions)
     print(acc)
 
 
