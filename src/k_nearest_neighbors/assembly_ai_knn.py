@@ -6,11 +6,8 @@ from matplotlib.colors import ListedColormap
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
 
-import utils.utilities as utils
+from utils.utilities import accuracy, euclidian_distance
 
-
-def euclidian_distance(x1, x2):
-    return np.sqrt(np.sum((x1-x2)**2))
 
 class KNN:
     def __init__(self, k=3):
@@ -51,7 +48,7 @@ def train():
     predictions = classifier.predict(X_test)
 
     print(predictions)
-    print(utils.accuracy(y_test, predictions))
+    print(accuracy(y_test, predictions))
 
 if __name__ == '__main__':
     train()
