@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 class PCA:
 
     def __init__(self, n_components):
@@ -13,9 +12,12 @@ class PCA:
     def fit(self, X):
         # mean centering
         self.mean = np.mean(X, axis=0)
+        # Make sure n_components can't be larger than number of features.
+        self.n_components = np.min([self.n_components, X.shape[1]])
         X = X - self.mean
         cov = np.cov(X.T)
         eigenvalues, eigenvectors = np.linalg.eig(cov)
+        # eigenvectors are column vectors; transpose to match features
         eigenvectors = eigenvectors.T
         idxs = np.argsort(eigenvalues)[::-1]
         eigenvalues = eigenvalues[idxs]

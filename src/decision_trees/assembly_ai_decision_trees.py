@@ -1,10 +1,9 @@
-from collections import Counter
-
 import numpy as np
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
 
-import utils.utilities as utils
+from utils.utilities import accuracy
+from utils.utilities import most_common_label
 
 
 class Node:
@@ -38,7 +37,7 @@ class DecisionTree:
         n_labels = len(np.unique(y))
         # check the stopping criteria
         if depth >= self.max_depth or n_labels == 1 or n_samples < self.min_samples_split:
-            leaf_value = self._most_common_label(y)
+            leaf_value = most_common_label(y)
             return Node(value=leaf_value)
         # find the best split
         feat_idxs = np.random.choice(n_feats, self.n_features, replace=False)
@@ -89,17 +88,12 @@ class DecisionTree:
         ps = hist / len(y)
         return -np.sum([p * np.log2(p) for p in ps if p > 0])
 
-    def _most_common_label(self, y):
-        counter = Counter(y)
-        return counter.most_common(1)[0][0]
-
     def _traverse_tree(self, x, node):
         if node.is_leaf_node():
             return node.value
         if x[node.feature] <= node.threshold:
             return self._traverse_tree(x, node.left)
         return self._traverse_tree(x, node.right)
-
 def train():
     ds = datasets.load_breast_cancer()
     X, y = ds.data, ds.target
@@ -107,7 +101,7 @@ def train():
     clf = DecisionTree(max_depth=50)
     clf.fit(X_train, y_train)
     predictions = clf.predict(X_test)
-    acc = utils.accuracy(y_test, predictions)
+    acc = accuracy(y_test, predictions)
     print(acc)
 
 

@@ -6,9 +6,16 @@ from matplotlib.colors import ListedColormap
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
 
-from utils.utilities import accuracy, euclidian_distance
+from utils.utilities import euclidian_distance, accuracy
 
-
+"""
+KNN is a simple regression/classification algorithm.
+Given K sets of resources points and a candidate resources point
+Calculate the distance from the candidate resources point to all other resources points
+Find the K closest points to the candidate resources point
+Regression: Assign to the candidate point the average value of the K closest points
+Classification: Assign to the candidate point the label of the K closest points
+"""
 class KNN:
     def __init__(self, k=3):
         self.k = k
@@ -47,8 +54,8 @@ def train():
     classifier.fit(X_train, y_train)
     predictions = classifier.predict(X_test)
 
-    print(predictions)
-    print(accuracy(y_test, predictions))
+#    print(predictions)
+    print('Accuracy: ', accuracy(y_test, predictions))
 
 if __name__ == '__main__':
     train()

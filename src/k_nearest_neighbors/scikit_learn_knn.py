@@ -1,6 +1,3 @@
-# see https://scikit-learn.org/stable/supervised_learning.html#supervised-learning
-# see https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier
-
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from sklearn import datasets
@@ -9,7 +6,7 @@ from sklearn.neighbors import KNeighborsClassifier
 
 import utils.utilities as utils
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cmap = ListedColormap(['#FF0000', '#00FF00', '#0000FF'])
 
     iris = datasets.load_iris()
@@ -27,4 +24,5 @@ if __name__ == '__main__':
 
     print(predictions)
     print(utils.accuracy(y_test, predictions))
+
 
