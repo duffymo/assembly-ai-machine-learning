@@ -1,8 +1,12 @@
+import numpy as np
 import pandas as pd
-
 from sklearn.compose import make_column_transformer
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
-
 
 # https://towardsdatascience.com/guide-to-encoding-categorical-features-using-scikit-learn-for-machine-learning-5048997a5c79
 
@@ -63,8 +67,21 @@ if __name__ == '__main__':
     column_transformer = make_column_transformer(
         (ohe, categorical_attributes),
         (oe, ordinal_attributes))
-#    ohe_columns = ohe.get_feature_names_out
-#    oe_columns = oe.get_feature_names_out
-    X_encoded = pd.DataFrame(column_transformer.fit_transform(X))
     # End data cleaning
 
+    # Model pipelines
+    # linear and gradient boost regressions
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1234)
+    lm = LinearRegression()
+    lm_pipeline = make_pipeline(column_transformer, lm)
+    lm_pipeline.fit(X_train, y_train)
+    lm_predictions = lm_pipeline.predict(X_test)
+    lm_mae = mean_absolute_error(lm_predictions, y_test)
+    lm_rmse = np.sqrt(mean_squared_error(lm_predictions, y_test))
+
+    gbm = GradientBoostingRegressor()
+    gbm_pipeline = make_pipeline(column_transformer, gbm)
+    gbm_pipeline.fit(X_train, y_train)
+    gbm_predictions = gbm_pipeline.predict(X_test)
+    gbm_mae = mean_absolute_error(gbm_predictions, y_test)
+    gbm_rmse = np.sqrt(mean_squared_error(gbm_predictions, y_test))
