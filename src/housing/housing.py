@@ -105,8 +105,8 @@ if __name__ == '__main__':
     # Add in the new derived values
 
     # Pipeline setup
-    cat_attributes = [ 'ocean_proximity']
-    num_data = pd.DataFrame(raw_data.drop(columns = cat_attributes, axis=1))
+    cat_attributes = ['ocean_proximity']
+    num_data = pd.DataFrame(raw_data.drop(columns=cat_attributes, axis=1))
     num_attributes = num_data.columns
 
     # Clean data manually.  Figure out the pipeline later.
@@ -147,4 +147,3 @@ if __name__ == '__main__':
     execute_regression('Linear Regression', LinearRegression(), X_train, X_test, y_train, y_test)
 
     # End modeling pipeline
-
