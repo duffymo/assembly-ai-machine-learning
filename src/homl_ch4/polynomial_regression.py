@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+from sklearn import linear_model
+from sklearn.preprocessing import PolynomialFeatures
+
 def generate_noisy_quadratic_data(xmin, xmax, a, b, c, npoints):
     """
     Generate quadratic data with noise
@@ -26,9 +29,22 @@ if __name__ == '__main__':
     c = 2.0
     npoints = 100
     X, y = generate_noisy_quadratic_data(xmin, xmax, a, b, c, npoints)
+    poly_features = PolynomialFeatures(degree=2, include_bias=False)
+    X_poly = poly_features.fit_transform(X)
+    sk_lin_reg = linear_model.LinearRegression()
+    sk_lin_reg.fit(X_poly, y)
+    sk_prediction = sk_lin_reg.predict(X_poly)
+
+    print('Underlying x^2   coeff: ', a)
+    print('Calculated x^2   coeff: ', sk_lin_reg.coef_[:,1])
+    print('Underlying x     coeff: ', b)
+    print('Calculated x     coeff: ', sk_lin_reg.coef_[:,0])
+    print('Underlying const coeff: ', c)
+    print('Calculated const coeff: ', sk_lin_reg.intercept_)
 
     ymin = np.min(y)
     ymax = np.max(y)
     plt.plot(X, y, 'b.')
+    plt.plot(X, sk_prediction, 'g.')
     plt.axis([xmin, xmax, ymin, ymax])
     plt.show()

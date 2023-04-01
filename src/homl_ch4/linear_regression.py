@@ -128,10 +128,16 @@ if __name__ == '__main__':
 
     intercept_diff = my_cls.coef_[0] - sk_cls.intercept_
     slope_diff = my_cls.coef_[1] - sk_cls.coef_[0]
+    print('Underlying intercept: ', b)
+    print('Stochastic intercept: ', my_cls.coef_[0])
+    print('SK linreg  intercept: ', sk_cls.intercept_)
     print('Intercept difference: ', intercept_diff)
-    print(' Intercept % error  : ', 100.0 * intercept_diff / sk_cls.intercept_, '%')
+    print('Intercept % error   : ', 100.0 * intercept_diff / sk_cls.intercept_, '%')
+    print('Underlying slope    : ', m)
+    print('Stochastic slope    : ', my_cls.coef_[1])
+    print('SK linreg slope     : ', sk_cls.coef_[0])
     print('Slope difference    : ', slope_diff)
-    print(' Slope % error      : ', 100.0 * slope_diff / sk_cls.coef_[0], '%')
+    print('Slope % error       : ', 100.0 * slope_diff / sk_cls.coef_[0], '%')
 
     ymin = np.min(y)
     ymax = np.max(y)
