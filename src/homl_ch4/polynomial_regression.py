@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
 from sklearn import linear_model
 from sklearn.preprocessing import PolynomialFeatures
+
+from utils.utilities import plot_learning_curves
+
 
 def generate_noisy_quadratic_data(xmin, xmax, a, b, c, npoints):
     """
@@ -29,7 +31,7 @@ if __name__ == '__main__':
     c = 2.0
     npoints = 100
     X, y = generate_noisy_quadratic_data(xmin, xmax, a, b, c, npoints)
-    poly_features = PolynomialFeatures(degree=2, include_bias=False)
+    poly_features = PolynomialFeatures(degree=10, include_bias=False)
     X_poly = poly_features.fit_transform(X)
     sk_lin_reg = linear_model.LinearRegression()
     sk_lin_reg.fit(X_poly, y)
@@ -47,4 +49,8 @@ if __name__ == '__main__':
     plt.plot(X, y, 'b.')
     plt.plot(X, sk_prediction, 'g.')
     plt.axis([xmin, xmax, ymin, ymax])
+    plt.show()
+
+    plot_learning_curves(sk_lin_reg, X_poly, y)
+    plt.axis([0, 80, 0, 3])
     plt.show()
