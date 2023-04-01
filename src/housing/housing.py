@@ -141,9 +141,10 @@ if __name__ == '__main__':
 
     execute_regression('Generalized Boost Method', GradientBoostingRegressor(), X_train, X_test, y_train, y_test)
     execute_regression('Decision Tree', DecisionTreeRegressor(), X_train, X_test, y_train, y_test)
+    rfr = RandomForestRegressor(n_estimators=50, random_state=1957)
     execute_regression('XG Boost', XGBRegressor(), X_train, X_test, y_train, y_test)
     # https://towardsdatascience.com/random-forest-in-python-24d0893d51c0
-    execute_regression('Random Forest', rfr := RandomForestRegressor(n_estimators=50, random_state=1957), X_train, X_test, y_train, y_test)
+    execute_regression('Random Forest', rfr, X_train, X_test, y_train, y_test)
     execute_regression('Linear Regression', LinearRegression(), X_train, X_test, y_train, y_test)
 
     # Do a grid search optimization for random forest
