@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
+
 from numpy.linalg import norm
-from sklearn import linear_model
+from sklearn.linear_model import Ridge
 
 """
 HOML Chapter 4
@@ -121,7 +122,9 @@ if __name__ == '__main__':
     plt.axis([0, my_cls.num_epochs, eta_min, eta_max])
     plt.show()
 
-    sk_cls = linear_model.LinearRegression()
+#    sk_cls = linear_model.SGDRegressor(penalty='l2')
+    sk_cls = Ridge(alpha=1, solver='cholesky')
+
     sk_cls.fit(X, y)
     sk_prediction = sk_cls.predict(X)
     print('SK coeffs: ', sk_cls.intercept_, sk_cls.coef_)
