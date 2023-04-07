@@ -2,7 +2,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from numpy.linalg import norm
-from sklearn.linear_model import Ridge
+from sklearn.base import clone
+from sklearn.linear_model import SGDRegressor
+from sklearn.metrics import mean_squared_error
 
 """
 HOML Chapter 4
@@ -100,6 +102,22 @@ def generate_noisy_linear_data(xmin, xmax, b, m, npoints):
     y = b + m * X + np.random.randn(npoints, 1)
     return (X, y)
 
+def early_stopping(X_train, y_train, y_validation, max_epochs=1000):
+    sgd = SGDRegressor(warm_start=True, penalty=None, learning_rate='constant', eta0=0.0005)
+    minimum_mse = float('inf')
+    mse_vs_epoch = {}
+    best_epoch = None
+    best_model = None
+    for epoch in range(max_epochs):
+        sgd.fit(X_train, y_train)
+        y_prediction = sgd.predict(X_train)
+        mse = mean_squared_error(y_prediction, y_validation)
+        mse_vs_epoch[epoch] = mse
+        if mse < minimum_mse:
+            minimum_mse = mse
+            best_epoch = epoch
+            best_model = clone(sgd)
+    return best_model, best_epoch, mse_vs_epoch
 
 if __name__ == '__main__':
     xmin = 0.0
@@ -109,7 +127,7 @@ if __name__ == '__main__':
     npoints = 100
     X, y = generate_noisy_linear_data(xmin, xmax, b, m, npoints)
 
-    my_cls = StochasticGradientDescent(num_epochs=1000, learning_rate=0.5)
+    my_cls = StochasticGradientDescent(num_epochs=75, learning_rate=0.5)
     my_cls.fit(X, y)
     my_prediction = my_cls.predict(X)
     print('My coeffs    : ', my_cls.coef_)
@@ -122,8 +140,15 @@ if __name__ == '__main__':
     plt.axis([0, my_cls.num_epochs, eta_min, eta_max])
     plt.show()
 
-#    sk_cls = linear_model.SGDRegressor(penalty='l2')
-    sk_cls = Ridge(alpha=1, solver='cholesky')
+#    sk_cls = SGDRegressor(penalty='l2')  # another way of doing ridge
+#    sk_cls = Ridge(alpha=1, solver='cholesky')
+#    sk_cls = Lasso(alpha=0.1)
+#    sk_cls = ElasticNet(alpha=0.1, l1_ratio=0.5)
+    # Need a validation set for the 2nd argument. Train + validation + test == two splits?
+    sk_cls, best_epoch, mse_vs_epoch = early_stopping(X, y, y, max_epochs=200)
+    print('Best epoch: ', best_epoch)
+    plt.plot(mse_vs_epoch.keys(), mse_vs_epoch.values(), 'r-')
+    plt.show()
 
     sk_cls.fit(X, y)
     sk_prediction = sk_cls.predict(X)

@@ -25,8 +25,8 @@ def most_common_label(y):
     counter = Counter(y)
     return counter.most_common(1)[0][0]
 
-# see https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html
-# see https://matplotlib.org/stable/gallery/statistics/histogram_multihist.html
+# see https://urldefense.com/v3/__https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html__;!!NT4GcUJTZV9haA!tQIuUZTLo_aSMuRHQFxSbvf3BQqK4cLCZM5bM6UAignV9iHm2kdUcFG2Dxi3_u1ZTGmSH_Nc9VoA9LUP$ 
+# see https://urldefense.com/v3/__https://matplotlib.org/stable/gallery/statistics/histogram_multihist.html__;!!NT4GcUJTZV9haA!tQIuUZTLo_aSMuRHQFxSbvf3BQqK4cLCZM5bM6UAignV9iHm2kdUcFG2Dxi3_u1ZTGmSH_Nc9aqssB0m$ 
 def plot_histograms(suptitle, titles, data, nbins=20, plot_width=4.8, plot_height=4.8):
     fig, axes = plt.subplots(nrows=titles.size, ncols=1, figsize=(plot_width, plot_height))
     fig.suptitle(suptitle)

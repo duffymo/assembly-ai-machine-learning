@@ -121,8 +121,8 @@ if __name__ == '__main__':
     cleaned_data = pd.DataFrame(scalar.fit_transform(cleaned_data))
 
     # Do a PCA for fun.  What is most important?
-    # https://stackoverflow.com/questions/22984335/recovering-features-names-of-explained-variance-ratio-in-pca-with-sklearn
-    # https://towardsdatascience.com/pca-clearly-explained-how-when-why-to-use-it-and-feature-importance-a-guide-in-python-7c274582c37e
+    # https://urldefense.com/v3/__https://stackoverflow.com/questions/22984335/recovering-features-names-of-explained-variance-ratio-in-pca-with-sklearn__;!!NT4GcUJTZV9haA!snP8PXSvMGhINvdJvZiZX08IQqI_q1qH4FNEi-VCqC92Qfo4NlK1n-9XR4g8BPPCTkOJA-p6kw3vr4kI$ 
+    # https://urldefense.com/v3/__https://towardsdatascience.com/pca-clearly-explained-how-when-why-to-use-it-and-feature-importance-a-guide-in-python-7c274582c37e__;!!NT4GcUJTZV9haA!snP8PXSvMGhINvdJvZiZX08IQqI_q1qH4FNEi-VCqC92Qfo4NlK1n-9XR4g8BPPCTkOJA-p6k7KYAi28$ 
     pca = PCA(n_components=16)
     pca.fit(cleaned_data)
     principal_data = pca.transform(cleaned_data)
@@ -141,10 +141,9 @@ if __name__ == '__main__':
 
     execute_regression('Generalized Boost Method', GradientBoostingRegressor(), X_train, X_test, y_train, y_test)
     execute_regression('Decision Tree', DecisionTreeRegressor(), X_train, X_test, y_train, y_test)
-    rfr = RandomForestRegressor(n_estimators=50, random_state=1957)
     execute_regression('XG Boost', XGBRegressor(), X_train, X_test, y_train, y_test)
-    # https://towardsdatascience.com/random-forest-in-python-24d0893d51c0
-    execute_regression('Random Forest', rfr, X_train, X_test, y_train, y_test)
+    # https://urldefense.com/v3/__https://towardsdatascience.com/random-forest-in-python-24d0893d51c0__;!!NT4GcUJTZV9haA!snP8PXSvMGhINvdJvZiZX08IQqI_q1qH4FNEi-VCqC92Qfo4NlK1n-9XR4g8BPPCTkOJA-p6kysRiAXg$ 
+    execute_regression('Random Forest', rfr := RandomForestRegressor(n_estimators=50, random_state=1957), X_train, X_test, y_train, y_test)
     execute_regression('Linear Regression', LinearRegression(), X_train, X_test, y_train, y_test)
 
     # Do a grid search optimization for random forest
