@@ -7,7 +7,7 @@ import pandas as pd
 from sklearn import datasets
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
-from sklearn.svm import LinearSVC
+from sklearn.svm import LinearSVC, SVC
 
 
 def classify_iris():
@@ -39,10 +39,13 @@ def classify_moons():
     for key, group in grouped:
         group.plot(ax=ax, kind='scatter', x='x', y='y', label=key, color=colors[key])
 
+    kernel = False
+    C_choice = 10
+    degree_choice =3
     polynomial_svm_clf = Pipeline((
         ('poly_features', PolynomialFeatures(degree=3)),
         ('scalar', StandardScaler()),
-        ('svm_clf', LinearSVC(C=10, loss='hinge'))
+        ('svm_clf', SVC(kernel='poly', degree=degree_choice, coef0=1, C=C_choice) if kernel else LinearSVC(C=C_choice, loss='hinge'))
     ))
     polynomial_svm_clf.fit(X, y)
 
