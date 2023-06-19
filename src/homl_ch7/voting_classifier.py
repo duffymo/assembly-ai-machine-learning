@@ -18,9 +18,10 @@ if __name__ == '__main__':
     log_clf = LogisticRegression()
     rf_clf = RandomForestClassifier()
     svm_clf = SVC()
+    svm_clf.probability = True
     voting_clf = VotingClassifier(
         estimators=[('lr', log_clf), ('rf', rf_clf), ('svm', svm_clf)],
-        voting='hard'
+        voting='soft'
     )
 
     for clf in (log_clf, rf_clf, svm_clf, voting_clf):
