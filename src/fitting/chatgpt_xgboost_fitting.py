@@ -1,26 +1,10 @@
 import matplotlib.pyplot as plt
-import pandas as pd
-"""
-A problem to remember plotting and fitting data from Stack Overflow
-https://stackoverflow.com/questions/79436232/how-to-fit-different-exponential-models-for-decay-and-growth-and-get-the-paramet?cb=1
-"""
-
-def time_series_plot(t, v, x_size=10, y_size=10, title='Time Series'):
-    plt.figure(figsize=(x_size, y_size))
-    plt.plot(t, v, marker='o', linestyle='-', color='r', label='Time Series')
-    plt.xlabel('Time')
-    plt.ylabel('Value')
-    plt.title(title)
-    plt.xticks(rotation=0)
-    plt.grid(True)
-    plt.legend()
-
-    plt.show()
-
-
+import numpy as np
+from xgboost import XGBRegressor
 
 if __name__ == '__main__':
-    x_decay = pd.array([
+
+    x_decay = np.array([
         0, 0.319000005722046, 1.34500002861023, 2.11700010299683, 2.65100002288818,
         3.19000005722046, 4.19700002670288, 4.99600005149841, 5.36800003051758,
         6.45600008964539, 7.24600005149841, 7.77900004386902, 8.31800007820129,
@@ -58,9 +42,9 @@ if __name__ == '__main__':
         100.638000011444, 101.667999982834, 102.457000017166, 102.848999977112,
         103.946000099182, 104.740000009537, 105.272000074387, 105.808000087738,
         106.844000101089, 107.647000074387, 107.97200012207, 108.999000072479,
-        109.77999997139], dtype=float)
+        109.77999997139], dtype=float).reshape(-1, 1)
 
-    y_decay = pd.array([
+    y_decay = np.array([
             391.12411366, 391.08100717, 390.94243548, 390.83830459, 390.76617733,
             390.69324728, 390.38999998, 390.14939786, 390.0376815, 389.70998253,
             389.47173279, 389.31119461, 389.1491491, 389.21559469, 389.26671895,
@@ -93,7 +77,7 @@ if __name__ == '__main__':
             367.28288322, 367.69518211, 368.01515944, 368.14410924, 368.5533401,
             368.86423517], dtype=float)
 
-    x_growth = pd.array([
+    x_growth = np.array([
         0, 0.552999973297119, 1.57200002670288, 2.36500000953674, 2.68499994277954,
         3.73000001907349, 4.51900005340576, 5.04900002479553, 5.57800006866455,
         6.62599992752075, 7.42400002479553, 7.72900009155273, 8.76999998092651,
@@ -131,9 +115,9 @@ if __name__ == '__main__':
         99.8559999465942, 100.934000015259, 101.703999996185, 102.239000082016,
         102.779000043869, 103.825999975204, 104.628999948502, 105.026000022888,
         106.069999933243, 106.845999956131, 107.378999948502, 107.917000055313,
-        108.930999994278, 109.716000080109], dtype=float)
+        108.930999994278, 109.716000080109], dtype=float).reshape(-1, 1)
 
-    y_growth = pd.array([
+    y_growth = np.array([
         479.10215226, 479.15010973, 479.04382887, 478.96121828, 478.92773784,
         478.81885903, 478.73656953, 478.68128682, 478.6261122, 478.85844051,
         479.03518717, 479.1025219, 479.33309695, 479.50873458, 479.62744808,
@@ -166,8 +150,33 @@ if __name__ == '__main__':
         486.34049808, 486.31955938, 486.30517609, 486.29067372, 486.4460626,
         486.56608919], dtype=float)
 
-    time_series_plot(x_decay, y_decay, title='Decay Data')
-    time_series_plot(x_growth, y_growth, title='Decay Data')
+    # Define and train XGBoost models
+    xgb_decay = XGBRegressor(objective='reg:squarederror', n_estimators=100)
+    xgb_decay.fit(x_decay, y_decay)
 
+    y_fit_decay = xgb_decay.predict(np.linspace(0, 110, 110).reshape(-1, 1))
 
+    xgb_growth = XGBRegressor(objective='reg:squarederror', n_estimators=100)
+    xgb_growth.fit(x_growth, y_growth)
 
+    y_fit_growth = xgb_growth.predict(np.linspace(0, 110, 110).reshape(-1, 1))
+
+    # Plot results
+    plt.figure(figsize=(10, 5))
+
+    # Decay plot
+    plt.subplot(1, 2, 1)
+    plt.scatter(x_decay, y_decay, label='Data', color='blue')
+    plt.plot(np.linspace(0, 110, 110), y_fit_decay, label='XGBoost Fit', color='red')
+    plt.title('XGBoost Decay Fit')
+    plt.legend()
+
+    # Growth plot
+    plt.subplot(1, 2, 2)
+    plt.scatter(x_growth, y_growth, label='Data', color='green')
+    plt.plot(np.linspace(0, 110, 110), y_fit_growth, label='XGBoost Fit', color='red')
+    plt.title('XGBoost Growth Fit')
+    plt.legend()
+
+    plt.savefig('/Users/michaelduffy/Code/python/assembly-ai-machine-learning/src/fitting/xgboost_fitting.png')
+    plt.show()
