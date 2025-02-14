@@ -5,6 +5,9 @@ def precision(tp, fp, fn, tn):
 def recall(tp, fp, fn, tn):
     return tp / (tp + fn)
 
+def accuracy(tp, fp, fn, tn):
+    return (tp + tn) / (tp + fp + fn + tn)
+
 def f_beta(tp, fp, fn, tn, beta=1.0):
     bsq = beta*beta
     p = precision(tp, fp, fn, tn)
@@ -20,6 +23,7 @@ if __name__ == '__main__':
     print('fp       : ', fp)
     print('fn       : ', fn)
     print('tn       : ', tn)
+    print('accuracy : ', accuracy(tp, fp, fn, tn))
     print('precision: ', precision(tp, fp, fn, tn))
     print('recall   : ', recall(tp, fp, fn, tn))
     print('f1       : ', f_beta(tp, fp, fn, tn))
