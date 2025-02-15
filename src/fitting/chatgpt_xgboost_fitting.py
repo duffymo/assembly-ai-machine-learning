@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from statsmodels.nonparametric.smoothers_lowess import lowess
 from xgboost import XGBRegressor
 
 if __name__ == '__main__':
@@ -154,29 +155,37 @@ if __name__ == '__main__':
     xgb_decay = XGBRegressor(objective='reg:squarederror', n_estimators=100)
     xgb_decay.fit(x_decay, y_decay)
 
-    y_fit_decay = xgb_decay.predict(np.linspace(0, 110, 110).reshape(-1, 1))
+    y_fit_decay = xgb_decay.predict(np.linspace(0, 110, 151).reshape(-1, 1))
+    loess_decay = lowess(y_decay - y_fit_decay, x_decay.ravel(), frac=0.3)
+    error_decay = np.std(y_decay - y_fit_decay)
 
     xgb_growth = XGBRegressor(objective='reg:squarederror', n_estimators=100)
     xgb_growth.fit(x_growth, y_growth)
 
-    y_fit_growth = xgb_growth.predict(np.linspace(0, 110, 110).reshape(-1, 1))
+    y_fit_growth = xgb_growth.predict(np.linspace(0, 110, 151).reshape(-1, 1))
+    loess_growth = lowess(y_growth - y_fit_growth, x_growth.ravel(), frac=0.3)
+    error_growth = np.std(y_growth - y_fit_growth)
 
     # Plot results
     plt.figure(figsize=(10, 5))
 
     # Decay plot
     plt.subplot(1, 2, 1)
-    plt.scatter(x_decay, y_decay, label='Data', color='blue')
-    plt.plot(np.linspace(0, 110, 110), y_fit_decay, label='XGBoost Fit', color='red')
-    plt.title('XGBoost Decay Fit')
+#    plt.scatter(x_decay, y_decay, label='Data', color='blue')
+    plt.plot(np.linspace(0, 110, 151), y_fit_decay, label='XGBoost Fit', color='red')
+    plt.fill_between(np.linspace(0, 110, 151), y_fit_decay - error_decay, y_fit_decay + error_decay, color='red',
+                     alpha=0.2, label="LOESS Error Band")
+    plt.title('XGBoost Decay Fit with Loess Error')
     plt.legend()
 
     # Growth plot
     plt.subplot(1, 2, 2)
-    plt.scatter(x_growth, y_growth, label='Data', color='green')
-    plt.plot(np.linspace(0, 110, 110), y_fit_growth, label='XGBoost Fit', color='red')
-    plt.title('XGBoost Growth Fit')
+#    plt.scatter(x_growth, y_growth, label='Data', color='green')
+    plt.plot(np.linspace(0, 110, 151), y_fit_growth, label='XGBoost Fit', color='red')
+    plt.fill_between(np.linspace(0, 110, 151), y_fit_growth - error_growth, y_fit_growth + error_growth, color='red',
+                     alpha=0.2, label="LOESS Error Band")
+    plt.title('XGBoost Growth Fit with Loess Error')
     plt.legend()
 
-    plt.savefig('/Users/michaelduffy/Code/python/assembly-ai-machine-learning/src/fitting/xgboost_fitting.png')
+#    plt.savefig('/Users/michaelduffy/Code/python/assembly-ai-machine-learning/src/fitting/xgboost_fitting.png')
     plt.show()
