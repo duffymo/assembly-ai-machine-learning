@@ -12,6 +12,26 @@ Then
 p(sick|pos) = p(pos|sick) * p(sick) / p(pos)
 p(pos) = p(pos|sick) * p(sick) + p(pos|not-sick) * p(not-sick)
 
+Another example is from manufacturing QA: if a test comes up positive,
+how likely is it that the product is defective?
+
+p(defective|positive) = p(positive|defective) * p(defective) / (p(positive|defective) * p(defective) + p(positive|not-defective) * p(not-defective))
+
+To find out the probability that the product is still good, given a positive test, just subtract.
+
+p(not-defective|positive) = 1 - p(defective|positive)
+
+From Binomial example:
+
+p(defective) = 0.001
+p(not-defective) = 1 - p(defective) = 0.999
+p(positive|defective) = 0.98 (test accuracy)
+p(positive|not-defective) = 0.02 (test accuracy)
+
+Therefore:
+
+p(defective|positive) = 0.98 * 0.001 / (0.98 * 0.001 + 0.02 * 0.999) = 0.046755
+p(not-defective|positive) = 1 - p(defective|positive) = 0.953245
 """
 def bayes(p_pos_sick, p_sick, p_pos_not_sick, p_not_sick):
     p_pos = p_pos_sick * p_sick + p_pos_not_sick * p_not_sick
