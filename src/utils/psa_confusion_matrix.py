@@ -1,3 +1,6 @@
+"""
+Make sure you understand exactly what specificity is.
+"""
 def psa_confusion_matrix(sensitivity, specificity, prob_disease):
     tp = sensitivity * prob_disease
     fp = (1.0 - specificity) * (1.0 - prob_disease)
