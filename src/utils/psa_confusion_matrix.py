@@ -1,5 +1,6 @@
 """
 Make sure you understand exactly what specificity is.
+https://priorprobability.com/2021/03/08/bayes-7-sensitivity-and-specificity/
 """
 def psa_confusion_matrix(sensitivity, specificity, prob_disease):
     tp = sensitivity * prob_disease
