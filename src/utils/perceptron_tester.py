@@ -1,3 +1,6 @@
+"""
+Function to evaluate a perceptron model
+"""
 def perceptron(x1, x2, w1, w2, b):
     return int((x1*w1 + x2*w2 + b) > 0)
 
